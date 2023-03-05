@@ -11,7 +11,7 @@ def draw_image_with_boxes(filename, result_list):
     data = pyplot.imread(filename)
     # загрузить фото на график
     pyplot.imshow(data)
-    # получение данных для прорисовки линий и прямоугольников
+    # получение содержимого для прорисовки линий и прямоугольников
     ax = pyplot.gca()
     # просмотреть все лица
     for result in result_list:
@@ -26,16 +26,18 @@ def draw_image_with_boxes(filename, result_list):
             if key in ['left_eye', 'right_eye', 'nose']:
                line = Rectangle((value[0], y), 0, height, fill=False, color='red')
                ax.add_patch(line)
+        print("Расстояние локальных от центра:", abs(result['keypoints']['left_eye'][0] - result['keypoints']['nose'][0]),';',abs(result['keypoints']['right_eye'][0] - result['keypoints']['nose'][0]))
     # показать итог
     pyplot.show()
 
 
-filename = '1.pgm'
+
+filename = 'S1/10.pgm'
 # загрузить фотографию
 pixels = cv2.imread(filename)
 # Инициализировать mtcnn
 detector = MTCNN()
-# используя mtcnn получить координаты лиц
+# используя mtcnn получить координаты лиц и положение фраментов лица
 faces = detector.detect_faces(pixels)
-# произвести обводку лица, нарисовать линии симметрии
+# нарисовать линии симметрии
 draw_image_with_boxes(filename, faces)
